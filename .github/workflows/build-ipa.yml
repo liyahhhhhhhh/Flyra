@@ -18,7 +18,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        working-directory: flyra-app
+        working-directory: Flyra
         run: npm ci
 
       - name: Generate iOS project
@@ -68,5 +68,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: FLYRA-unsigned-IPA
-          path: flyra-app/FLYRA-unsigned.ipa
+          path: Flyra/FLYRA-unsigned.ipa
           retention-days: 7
