@@ -8,7 +8,6 @@
     "scheme": "flyraapp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon",
       "bundleIdentifier": "com.liyahhhsteam.flyraapp",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
