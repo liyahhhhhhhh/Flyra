@@ -22,15 +22,15 @@ jobs:
         run: npm ci
 
       - name: Generate iOS project
-        working-directory: flyra-app
+        working-directory: Flyra
         run: npx expo prebuild --platform ios --clean
 
       - name: Install CocoaPods
-        working-directory: flyra-app
+        working-directory: Flyra
         run: pod install --project-directory=ios
 
       - name: Build unsigned iOS app
-        working-directory: flyra-app
+        working-directory: Flyra
         run: |
           set +e
 
@@ -58,7 +58,7 @@ jobs:
           tail -n 40 xcode-build.log
 
       - name: Package unsigned IPA
-        working-directory: flyra-app
+        working-directory: Flyra
         run: |
           mkdir -p Payload
           cp -R build/Build/Products/Release-iphoneos/flyraapp.app Payload/
