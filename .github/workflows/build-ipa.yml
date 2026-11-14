@@ -17,20 +17,27 @@ jobs:
         with:
           node-version: 22
 
+      - name: Verify project files
+        working-directory: flyra-app
+        run: |
+          ls -la
+          test -f package.json
+          test -f package-lock.json
+
       - name: Install dependencies
-        working-directory: Flyra
+        working-directory: flyra-app
         run: npm install
 
       - name: Generate iOS project
-        working-directory: Flyra
+        working-directory: flyra-app
         run: npx expo prebuild --platform ios --clean
 
       - name: Install CocoaPods
-        working-directory: Flyra
+        working-directory: flyra-app
         run: pod install --project-directory=ios
 
       - name: Build unsigned iOS app
-        working-directory: Flyra
+        working-directory: flyra-app
         run: |
           set +e
 
@@ -58,7 +65,7 @@ jobs:
           tail -n 40 xcode-build.log
 
       - name: Package unsigned IPA
-        working-directory: Flyra
+        working-directory: flyra-app
         run: |
           mkdir -p Payload
           cp -R build/Build/Products/Release-iphoneos/flyraapp.app Payload/
@@ -68,5 +75,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: FLYRA-unsigned-IPA
-          path: Flyra/FLYRA-unsigned.ipa
+          path: flyra-app/FLYRA-unsigned.ipa
           retention-days: 7
