@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: Flyra
-        run: npm ci
+        run: npm install
 
       - name: Generate iOS project
         working-directory: Flyra
