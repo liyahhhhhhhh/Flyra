@@ -1,3 +1,4 @@
+
 name: Build FLYRA IPA
 
 on:
@@ -31,6 +32,8 @@ jobs:
       - name: Build unsigned iOS app
         working-directory: flyra-app
         run: |
+          set +e
+
           xcodebuild \
             -workspace ios/flyraapp.xcworkspace \
             -scheme flyraapp \
@@ -41,12 +44,23 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            build
+            build > xcode-build.log 2>&1
+
+          STATUS=$?
+
+          if [ "$STATUS" -ne 0 ]; then
+            echo "===== XCODE BUILD ERRORS ====="
+            grep -n -i -B 3 -A 5 -E 'error:|fatal error:|BUILD FAILED' xcode-build.log | tail -n 160 || tail -n 100 xcode-build.log
+            exit "$STATUS"
+          fi
+
+          echo "===== BUILD SUCCEEDED ====="
+          tail -n 40 xcode-build.log
 
       - name: Package unsigned IPA
         working-directory: flyra-app
         run: |
-          mkdir Payload
+          mkdir -p Payload
           cp -R build/Build/Products/Release-iphoneos/flyraapp.app Payload/
           zip -r FLYRA-unsigned.ipa Payload
 
